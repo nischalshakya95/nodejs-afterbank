@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  express-server-typescript:
+    build: .
+    image: express-server-typescript:v1
+    container_name: express-server-typescript
+    command: npm start
+    ports:
+      - 8080:8080
+    deploy:
+      resources:
+        limits:
+          memory: 200m
+        reservations:
+          memory: 150m
+
+networks:
+  default:
+    external:
+      name: docker-compose_default
