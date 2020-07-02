@@ -1,0 +1,23 @@
+branches:
+  only:
+    - dev
+    - master
+git:
+  depth: false
+
+matrix:
+  include:
+    - name: express-auth
+      language: node_js
+      node_js:
+        - "stable"
+      cache:
+        directories:
+          - "node_modules"
+      script:
+        - npm run build
+
+deploy:
+  app: nodejs-afterbank
+  provider: heroku
+  api_key: "f6128b01-f376-4395-85a5-9bfd49fe6bde"
