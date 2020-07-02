@@ -8,7 +8,7 @@ export const config = {
     port: process.env.PORT || 8080,
     host: process.env.HOST || '0.0.0.0'
   },
-  afterBank:{
+  afterBank: {
     baseUrl: process.env.AFTERBANK_BASEURL,
     serviceKey: process.env.SERVICE_KEY,
     service: process.env.SERVICE,
