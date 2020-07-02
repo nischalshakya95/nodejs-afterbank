@@ -1,20 +1,27 @@
-import { Request, Response } from 'express';
-import { Consent } from './model/consent';
-import axios from 'axios';
-import { config } from '../config/config';
 import qs from 'qs';
+import axios from 'axios';
+import { Request, Response } from 'express';
+
+import { Consent } from './model/consent';
+import { Consentcallback } from './model/consentcallback';
+
+import { config } from '../config/config';
 
 const CONSENT_DATA = qs.stringify({
   servicekey: config.afterBank.serviceKey,
   service: config.afterBank.service,
   grantType: config.afterBank.grantType,
   validUntil: config.afterBank.validUntil,
-  yourConsentCallback: config.afterBank.consentCallBackUrl
+  yourConsentCallback: config.afterBank.consentCallBackUrl,
+  urlRedirect: 'https://nodejs-afterbank.herokuapp.com/consent/response'
 });
 
 const headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 };
+
+let consentcallback: Consentcallback = {};
+let paymentCallback = {};
 
 export async function getConsent(req: Request, res: Response) {
   try {
@@ -23,4 +30,21 @@ export async function getConsent(req: Request, res: Response) {
   } catch (err) {
     res.status(400).json({ data: err });
   }
+}
+
+export async function consentCallBack(req: Request, res: Response) {
+  consentcallback = req.body;
+  res.redirect('https://nodejs-afterbank.herokuapp.com/consent/response');
+}
+
+export async function getConsentCallBack(req: Request, res: Response) {
+  res.status(200).send({ data: consentcallback });
+}
+
+export async function paymentInitiateCallBack(req: Request, res: Response) {
+  paymentCallback = req.body;
+}
+
+export async function getPaymentInitiateCallBack(req: Request, res: Response) {
+  res.status(200).send({ data: paymentCallback });
 }
