@@ -7,6 +7,7 @@ import { Consentcallback } from './model/consentcallback';
 
 import { config } from '../config/config';
 import logger from '../config/logger';
+import { Banks } from './model/banks';
 
 const CONSENT_DATA = qs.stringify({
   servicekey: config.afterBank.serviceKey,
@@ -50,4 +51,14 @@ export async function paymentInitiateCallBack(req: Request, res: Response) {
 
 export async function getPaymentInitiateCallBack(req: Request, res: Response) {
   res.status(200).send({ data: paymentCallback });
+}
+
+export async function getBanks(req: Request, res: Response) {
+  try {
+    const response = await axios.get('https://apipsd2.afterbanks.com/listOfSupportedBanks');
+    const banks: Banks[] = response.data;
+    res.status(200).send({data: banks});  
+  } catch (err) {
+    res.status(400).json({data: err});
+  } 
 }

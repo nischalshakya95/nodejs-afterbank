@@ -13,4 +13,6 @@ router.post('/payment/initiate/callback', afterBankController.paymentInitiateCal
 
 router.get('/payment/initiate/response', afterBankController.getPaymentInitiateCallBack);
 
+router.get('/listOfSupportedBanks', afterBankController.getBanks);
+
 export default router;
