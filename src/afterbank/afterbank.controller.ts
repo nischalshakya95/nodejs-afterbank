@@ -6,6 +6,7 @@ import { Consent } from './model/consent';
 import { Consentcallback } from './model/consentcallback';
 
 import { config } from '../config/config';
+import logger from '../config/logger';
 
 const CONSENT_DATA = qs.stringify({
   servicekey: config.afterBank.serviceKey,
@@ -26,6 +27,7 @@ let paymentCallback = {};
 export async function getConsent(req: Request, res: Response) {
   try {
     const response: Consent = await axios.post('https://apipsd2.afterbanks.com/consent/get/', CONSENT_DATA, { headers });
+    logger.info(`getConsent response ${response}`);
     res.status(200).json({ data: response.data });
   } catch (err) {
     res.status(400).json({ data: err });
@@ -34,6 +36,7 @@ export async function getConsent(req: Request, res: Response) {
 
 export async function consentCallBack(req: Request, res: Response) {
   consentcallback = req.body;
+  logger.info(`consentCallbackResponse ${consentCallBack}`);
   res.redirect('https://nodejs-afterbank.herokuapp.com/consent/response');
 }
 
