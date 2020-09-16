@@ -1,17 +1,22 @@
 import { Router } from 'express';
+import * as afterBankConsentController from './consent/afterbank-consent.controller';
+import * as afterBankPISPController from './pisp/afterbank-pisp.controller';
+import * as afterBankAISPController from './aisp/afterbank-aisp.controller';
 import * as afterBankController from './afterbank.controller';
 
 const router = Router();
 
-router.get('/consent/get', afterBankController.getConsent);
+router.get('/consent/get', afterBankConsentController.getConsent);
 
-router.post('/consent/callback', afterBankController.consentCallBack);
+router.post('/consent/callback', afterBankConsentController.consentCallBack);
 
-router.get('/consent/response', afterBankController.getConsentCallBack);
+router.get('/consent/response', afterBankConsentController.getConsentCallBack);
 
-router.post('/payment/initiate/callback', afterBankController.paymentInitiateCallBack);
+router.post('/account/account-information', afterBankAISPController.fetchAccountInformation);
 
-router.get('/payment/initiate/response', afterBankController.getPaymentInitiateCallBack);
+router.post('/payment/initiate/callback', afterBankPISPController.paymentInitiateCallBack);
+
+router.get('/payment/initiate/response', afterBankPISPController.getPaymentInitiateCallBack);
 
 router.get('/listOfSupportedBanks', afterBankController.getBanks);
 
