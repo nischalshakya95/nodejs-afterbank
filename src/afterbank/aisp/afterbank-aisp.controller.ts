@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { AccountInformationRequest } from './account-information-request.model';
+import { AccountInformationRequest } from './account-information-request';
 import axios from 'axios';
 import qs from 'qs';
-import { AccountInformation } from './account-information-response.model';
+import { AccountInformation } from './account-information-response';
+import { config } from '../../config/config';
 
 const headers = {
   'Content-Type': 'application/x-www-form-urlencoded',
@@ -12,6 +13,8 @@ const headers = {
 export async function fetchAccountInformation(req: Request, res: Response) {
   try {
     const accountInformationRequest: AccountInformationRequest = req.body;
+    // @ts-ignore
+    accountInformationRequest.servicekey = config.afterBank.serviceKey;
     const request = qs.stringify(accountInformationRequest);
     const { data } = await axios.post('https://apipsd2.afterbanks.com/transactions/', request, {
       headers
