@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { PaymentInitiateRequest } from './payment-initiate-request';
+import { PaymentInitiateRequest } from '../model/payment-initiate-request';
 import { config } from '../../config/config';
 import qs from 'qs';
 import axios from 'axios';
-import { AccountInformation } from '../aisp/account-information-response';
-import { AccountInformationRequest } from '../aisp/account-information-request';
+import { AccountInformation } from '../model/account-information-response';
+import { AccountInformationRequest } from '../model/account-information-request';
 
 let paymentCallback = {};
 

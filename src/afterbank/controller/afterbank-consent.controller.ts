@@ -1,5 +1,4 @@
 import { Consent } from '../model/consent';
-import logger from '../../config/logger';
 import { config } from '../../config/config';
 import { Consentcallback } from '../model/consentcallback';
 import qs from 'qs';
@@ -24,7 +23,6 @@ let consentcallback: Consentcallback = {};
 export async function getConsent(req: Request, res: Response) {
   try {
     const response: Consent = await axios.post('https://apipsd2.afterbanks.com/consent/get/', CONSENT_DATA, { headers });
-    logger.info(`getConsent response ${response}`);
     res.status(200).json({ data: response.data });
   } catch (err) {
     res.status(400).json({ data: err });

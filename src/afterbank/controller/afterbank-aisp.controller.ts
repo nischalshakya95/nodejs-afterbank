@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { AccountInformationRequest } from './account-information-request';
+import { AccountInformationRequest } from '../model/account-information-request';
 import axios from 'axios';
 import qs from 'qs';
-import { AccountInformation } from './account-information-response';
+import { AccountInformation } from '../model/account-information-response';
 import { config } from '../../config/config';
 
 const headers = {

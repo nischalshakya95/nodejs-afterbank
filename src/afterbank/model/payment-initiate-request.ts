@@ -1,4 +1,4 @@
-import { BaseRequest } from '../model/base-request';
+import { BaseRequest } from './base-request';
 
 export interface PaymentInitiateRequest extends BaseRequest {
   paymentType: string;

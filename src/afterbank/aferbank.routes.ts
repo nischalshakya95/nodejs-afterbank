@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import * as afterBankConsentController from './consent/afterbank-consent.controller';
-import * as afterBankPISPController from './pisp/afterbank-pisp.controller';
-import * as afterBankAISPController from './aisp/afterbank-aisp.controller';
-import * as afterBankController from './afterbank.controller';
+import * as afterBankConsentController from './controller/afterbank-consent.controller';
+import * as afterBankPISPController from './controller/afterbank-pisp.controller';
+import * as afterBankAISPController from './controller/afterbank-aisp.controller';
+import * as afterBankController from './controller/afterbank.controller';
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { Banks } from './model/banks';
+import { Banks } from '../model/banks';
 
 export async function getBanks(req: Request, res: Response) {
   try {
