@@ -14,6 +14,7 @@ export const config = {
     service: process.env.SERVICE,
     grantType: process.env.GRANT_TYPE,
     validUntil: process.env.VALID_UNTIL,
-    consentCallBackUrl: process.env.CONSENT_CALL_BACK
+    consentCallBackUrl: process.env.CONSENT_CALL_BACK,
+    consentCallBackResponseUrl: process.env.CONSENT_RESPONSE_REDIRECT_URL
   }
 };

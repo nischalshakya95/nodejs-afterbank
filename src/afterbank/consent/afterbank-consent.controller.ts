@@ -12,7 +12,7 @@ const CONSENT_DATA = qs.stringify({
   grantType: config.afterBank.grantType,
   validUntil: config.afterBank.validUntil,
   yourConsentCallback: config.afterBank.consentCallBackUrl,
-  urlRedirect: 'https://nodejs-afterbank.herokuapp.com/consent/response'
+  urlRedirect: config.afterBank.consentCallBackResponseUrl
 });
 
 const headers = {
@@ -33,8 +33,10 @@ export async function getConsent(req: Request, res: Response) {
 
 export async function consentCallBack(req: Request, res: Response) {
   consentcallback = req.body;
-  logger.info(`consentCallbackResponse ${consentCallBack}`);
-  res.redirect('https://nodejs-afterbank.herokuapp.com/consent/response');
+  const urlRedirect: string = config.afterBank.consentCallBackResponseUrl
+    ? config.afterBank.consentCallBackResponseUrl
+    : 'https://localhost:8080/consent/response';
+  res.redirect(urlRedirect);
 }
 
 export async function getConsentCallBack(req: Request, res: Response) {
