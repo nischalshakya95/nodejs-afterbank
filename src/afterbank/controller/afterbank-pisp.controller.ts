@@ -7,6 +7,7 @@ import { AccountInformation } from '../model/account-information-response';
 import { AccountInformationRequest } from '../model/account-information-request';
 
 let paymentCallback = {};
+let accountInformations: AccountInformation[] = [];
 
 const headers = {
   'Content-Type': 'application/x-www-form-urlencoded',
@@ -20,13 +21,22 @@ export async function initiatePayment(req: Request, res: Response) {
     paymentInitiateRequest.servicekey = config.afterBank.serviceKey;
     const request = qs.stringify(paymentInitiateRequest);
 
-    const accountInformation: AccountInformation = await fetchAccount(paymentInitiateRequest.token, paymentInitiateRequest.sourceIBAN);
+    const { token, sourceIBAN } = paymentInitiateRequest;
+    const accountInformation: AccountInformation = await fetchAccount(token ? token : '', sourceIBAN);
 
-    if (accountInformation.balance >= paymentInitiateRequest.amount) {
-      const { data } = await axios.post('https://apipsd2.afterbanks.com/payment/initiate/', request, { headers });
-      res.status(200).json({ data });
+    if (fetchDestinationIBAN(paymentInitiateRequest.destinationIBAN)) {
+      if (accountInformation) {
+        if (accountInformation.balance >= paymentInitiateRequest.amount) {
+          const { data } = await axios.post('https://apipsd2.afterbanks.com/payment/initiate/', request, { headers });
+          res.status(200).json({ data });
+        } else {
+          res.status(400).send({ message: 'Insufficient Balance' });
+        }
+      } else {
+        res.status(400).send({ message: 'Invalid source IBAN number' });
+      }
     } else {
-      res.status(400).send({ message: 'Insufficient Balance' });
+      res.status(400).send({ message: 'Invalid destination IBAN number' });
     }
   } catch (err) {
     res.status(400).send({ data: err });
@@ -39,6 +49,20 @@ export async function paymentInitiateCallBack(req: Request, res: Response) {
 
 export async function getPaymentInitiateCallBack(req: Request, res: Response) {
   res.status(200).send({ data: paymentCallback });
+}
+
+export async function getPaymentStatus(req: Request, res: Response) {
+  try {
+    const { paymentId } = req.query;
+    const request = qs.stringify({
+      paymentId,
+      servicekey: config.afterBank.serviceKey
+    });
+    const { data } = await axios.post('https://apipsd2.afterbanks.com/payment/status/', request, { headers });
+    res.status(200).send({ data });
+  } catch (err) {
+    res.status(400).send({ data: err });
+  }
 }
 
 async function fetchAccount(token: string, iban: string) {
@@ -54,8 +78,14 @@ async function fetchAccount(token: string, iban: string) {
   const { data } = await axios.post('https://apipsd2.afterbanks.com/transactions/', request, {
     headers
   });
-  const accountInformation: AccountInformation[] = data;
-  return accountInformation.filter((f) => {
+  accountInformations = data;
+  return accountInformations.filter((f) => {
+    return f.iban === iban;
+  })[0];
+}
+
+function fetchDestinationIBAN(iban: string) {
+  return accountInformations.filter((f) => {
     return f.iban === iban;
   })[0];
 }

@@ -20,6 +20,8 @@ router.post('/payment/initiate/callback', afterBankPISPController.paymentInitiat
 
 router.get('/payment/initiate/response', afterBankPISPController.getPaymentInitiateCallBack);
 
+router.get('/payment/status', afterBankPISPController.getPaymentStatus);
+
 router.get('/listOfSupportedBanks', afterBankController.getBanks);
 
 export default router;

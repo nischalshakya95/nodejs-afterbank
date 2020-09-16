@@ -1,4 +1,4 @@
 export interface BaseRequest {
-  token: string;
+  token?: string;
   servicekey: string;
 }
