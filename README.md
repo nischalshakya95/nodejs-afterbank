@@ -1,6 +1,6 @@
-## express-server-typescript
+## nodejs-afterbank
 
-Sample starter project with required configuration such as express, typescript, prettier, husky and docker.
+Contains API call made to the afterbank
 
 ## Prerequisites
 
@@ -41,5 +41,7 @@ Sample starter project with required configuration such as express, typescript, 
 ### References
 
 https://stackify.com/winston-logging-tutorial/
+
 https://www.codota.com/code/javascript/functions/winston/format
+
 https://medium.com/@jorgemcdev/node-express-app-typescript-tslint-prettier-airbnb-husky-c42588cbcbe3
