@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { AccountInformationRequest } from '../model/account-information-request';
 import axios from 'axios';
 import qs from 'qs';
 import { AccountInformation } from '../model/account-information-response';
@@ -12,15 +11,26 @@ const headers = {
 
 export async function fetchAccountInformation(req: Request, res: Response) {
   try {
-    const accountInformationRequest: AccountInformationRequest = req.body;
-    // @ts-ignore
-    accountInformationRequest.servicekey = config.afterBank.serviceKey;
-    const request = qs.stringify(accountInformationRequest);
+    const request = qs.stringify({
+      servicekey: config.afterBank.serviceKey,
+      token: 'sandbox.r6s9c2fm',
+      startDate: '08-08-2020',
+      products: 'GLOBAL'
+    });
     const { data } = await axios.post('https://apipsd2.afterbanks.com/transactions/', request, {
       headers
     });
-    const accountInformation: AccountInformation[] = data;
-    res.status(200).json({ data: accountInformation });
+    const accountInformations: AccountInformation[] = data;
+    const { accountId } = req.query;
+
+    if (!accountId) {
+      return res.status(200).json({ data: accountInformations });
+    } else {
+      const accountInformation: AccountInformation = accountInformations.filter((f) => {
+        return f.iban === accountId;
+      })[0];
+      res.status(200).json({ data: accountInformation });
+    }
   } catch (err) {
     res.status(400).json({ data: err });
   }

@@ -12,7 +12,7 @@ router.post('/consent/callback', afterBankConsentController.consentCallBack);
 
 router.get('/consent/response', afterBankConsentController.getConsentCallBack);
 
-router.post('/account/account-information', afterBankAISPController.fetchAccountInformation);
+router.get('/account/account-information', afterBankAISPController.fetchAccountInformation);
 
 router.post('/payment/initiate/', afterBankPISPController.initiatePayment);
 
